@@ -6,7 +6,7 @@ import wtforms
 # Theme
 #Varibles
 TodaysDate = time.strftime("%d-%m-%Y")
-EXCEL_FILE = 'Excel_Data_Entry.xlsx'
+EXCEL_FILE = 'static/Excel_Data_Entry.xlsx'
 #CSV_FIlE = 'Excel_Data_Entry.csv'
 df = pd.read_excel(EXCEL_FILE)
 #df2 = pd.read_csv(CSV_FIlE)

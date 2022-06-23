@@ -9,6 +9,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 import flask_excel as excel
 import pandas as pd
 
+
 posts = [
     'Welcome'
 ]
@@ -108,13 +109,15 @@ def page_not_found(e):
     return render_template("500.html"), 500
 
 
+
 # Entry form
 @app.route('/entry', methods=['GET', 'POST'])
 @login_required
 def entry():
     form = Entry()
 
-    if form.validate_on_submit():
+    if form.submit():
+
         post = Post(SKU=form.SKU.data,
                     Parent=form.Parent.data,
                     Brand=form.Brand.data,
@@ -132,13 +135,45 @@ def entry():
                     Height=form.Height.data,
                     Length=form.Length.data,
                     Depth=form.Depth.data,
-                    Purchased_Ord=form.Purchase_Ord.data,
+                    PurchaseOrder=form.PurchaseOrder.data,
                     Label=form.Label.data,
                     Kids_Sizes=form.Kids_Sizes.data,
                     Adult_Sizes=form.Adult_Sizes.data, )
+        # add all values of post to excel file add a new row for every KIDS_Sizes and  Adult_Sizes.
+        #for i in range(len(form.Kids_Sizes.data)):
+            #post.Kids_Sizes = form.Kids_Sizes.data[i]
+        #for i in range(len(form.Adult_Sizes.data)):
+            #post.Adult_Sizes = form.Adult_Sizes.data[i]
 
-        db.session.commit()
-        db.session.add()
-    flash('Your post has been created!', 'success')
 
-    return render_template('entry.html', title='Entry', form=form)
+
+        # add post to excel file using pandas
+
+        df = pd.DataFrame({'SKU': [form.SKU.data],'Parent': [form.Parent.data],'Brand': [form.Brand.data],'Gender': [form.Gender.data],'Closure': [form.Closure.data]})
+        df.to_excel('test.xlsx', sheet_name='Sheet1', index=False)
+        return render_template('entry.html', title='Entry', form=form)
+
+
+
+
+
+
+
+
+
+
+
+
+    else:
+        return render_template('entry.html', title='Entry', form=form)
+
+
+
+
+
+
+
+
+
+
+

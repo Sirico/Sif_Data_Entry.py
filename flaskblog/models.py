@@ -1,7 +1,7 @@
 from datetime import datetime
 from flaskblog import db, login_manager
 from flask_login import UserMixin
-import pandas as pd
+
 
 
 @login_manager.user_loader
@@ -29,28 +29,31 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     SKU = db.Column(db.Integer, unique=True, nullable=False)
     Parent = db.Column(db.Boolean)
-    Brand = db.Column(db.String(20), unique=True, nullable=False)
-    Gender = db.Column(db.String(20), unique=True, nullable=False)
-    Closure = db.Column(db.String(20), unique=True, nullable=False)
-    Type = db.Column(db.String(20), unique=True, nullable=False)
-    Colour = db.Column(db.String(20), unique=True, nullable=False)
-    Country_Manu = db.Column(db.String(20), unique=True, nullable=False)
-    Upper_Mat = db.Column(db.String(20), unique=True, nullable=False)
-    Lining_Mat = db.Column(db.String(20), unique=True, nullable=False)
-    Insole_Mat = db.Column(db.String(20), unique=True, nullable=False)
-    Heel_Height = db.Column(db.Integer, unique=True, nullable=False)
-    Weight = db.Column(db.Integer, unique=True, nullable=False)
-    Height = db.Column(db.Integer, unique=True, nullable=False)
-    Length = db.Column(db.Integer, unique=True, nullable=False)
-    Depth = db.Column(db.Integer, unique=True, nullable=False)
-    Purchase_Ord = db.Column(db.Integer, unique=True, nullable=False)
+    Brand =db.Column(db.Integer, nullable=False)
+    Gender = db.Column(db.Integer, nullable=False)
+    Closure = db.Column(db.Integer, nullable=False)
+    Model = db.Column(db.Integer, nullable=False)
+    Type = db.Column(db.Integer, nullable=False)
+    Colour = db.Column(db.Integer, nullable=False)
+    Country_Manu = db.Column(db.Integer, nullable=False)
+    Upper_Mat = db.Column(db.Integer, nullable=False)
+    Lining_Mat = db.Column(db.Integer, nullable=False)
+    Insole_Mat = db.Column(db.Integer, nullable=False)
+    Heel_Height = db.Column(db.Integer, nullable=False)
+    Weight = db.Column(db.Integer, nullable=False)
+    Height = db.Column(db.Integer, nullable=False)
+    Length = db.Column(db.Integer, nullable=False)
+    Depth = db.Column(db.Integer, nullable=False)
+    PurchaseOrder = db.Column(db.String(200), nullable=False)
     Label = db.Column(db.String(20), unique=True, nullable=False)
     Kids_Sizes = db.Column(db.Integer, unique=True, nullable=False)
     Adult_Sizes = db.Column(db.Integer, unique=True, nullable=False)
 
+
 # Data entry form to be submitted to database
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String(20), nullable=False, default='current_user.username')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     Date = db.Column(db.DateTime, default=datetime.utcnow)
     SKU = db.Column(db.Integer, unique=True, nullable=False)
@@ -69,7 +72,7 @@ class Entry(db.Model):
     Height = db.Column(db.Integer, unique=True, nullable=False)
     Length = db.Column(db.Integer, unique=True, nullable=False)
     Depth = db.Column(db.Integer, unique=True, nullable=False)
-    Purchase_Ord = db.Column(db.Integer, unique=True, nullable=False)
+    PurchaseOrder = db.Column(db.String(200), nullable=False)
     Label = db.Column(db.String(20), unique=True, nullable=False)
     Kids_Sizes = db.Column(db.Integer, unique=True, nullable=False)
     Adult_Sizes = db.Column(db.Integer, unique=True, nullable=False)

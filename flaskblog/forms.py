@@ -89,7 +89,7 @@ class Entry(FlaskForm):
     Height = IntegerField("Input the products height in cm", validators=[DataRequired()])
     Length = IntegerField("Input the products length in cm", validators=[DataRequired()])
     Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
-    Purchase_Ord = StringField("Input the purchase order number", validators=[DataRequired()])
+    PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
     Kids_Sizes = MultiCheckboxField("Please Select size", choices=['2', '3', '4', '5', '6'])
     Adult_Sizes = MultiCheckboxField("Please Select size", choices=['2', '3'])
