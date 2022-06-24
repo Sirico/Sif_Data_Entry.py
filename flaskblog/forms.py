@@ -4,7 +4,7 @@ from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateTimeField, RadioField, SelectField, \
     IntegerField, SelectMultipleField, DateField, validators
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from flaskblog.models import User,Entry
+from flaskblog.models import User
 from datetime import datetime
 from wtforms import widgets
 
@@ -73,7 +73,7 @@ class Entry(FlaskForm):
     Date = date.strftime("%a"' ' "%b" ' ' '%d' ' ' '%Y')
     Time = date.strftime("%R")
     SKU = StringField("SKU", validators=[DataRequired()])
-    Parent = BooleanField('Is this a parent SKU?', default='checked')
+    Parent = BooleanField('Is this a parent SKU?', default='unchecked')
     Brand = SelectField("Enter Brand", choices=['addidas', 'Rebok'], validators=[DataRequired()])
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
     Closure = SelectField("Select Closure Type", choices=['', 'test'], validators=[DataRequired()])
@@ -93,4 +93,6 @@ class Entry(FlaskForm):
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
     Kids_Sizes = MultiCheckboxField("Please Select size", choices=['2', '3', '4', '5', '6'])
     Adult_Sizes = MultiCheckboxField("Please Select size", choices=['2', '3'])
+
+
     submit = SubmitField('Entry')

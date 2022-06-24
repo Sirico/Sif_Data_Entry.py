@@ -23,13 +23,11 @@ class User(db.Model, UserMixin):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     SKU = db.Column(db.Integer, unique=True, nullable=False)
     Parent = db.Column(db.Boolean)
-    Brand =db.Column(db.Integer, nullable=False)
+    Brand = db.Column(db.Integer, nullable=False)
     Gender = db.Column(db.Integer, nullable=False)
     Closure = db.Column(db.Integer, nullable=False)
     Model = db.Column(db.Integer, nullable=False)
@@ -50,32 +48,10 @@ class Post(db.Model):
     Adult_Sizes = db.Column(db.Integer, unique=True, nullable=False)
 
 
-# Data entry form to be submitted to database
-class Entry(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.String(20), nullable=False, default='current_user.username')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    Date = db.Column(db.DateTime, default=datetime.utcnow)
-    SKU = db.Column(db.Integer, unique=True, nullable=False)
-    Parent = db.Column(db.Boolean)
-    Brand = db.Column(db.String(20), unique=True, nullable=False)
-    Gender = db.Column(db.String(20), unique=True, nullable=False)
-    Closure = db.Column(db.String(20), unique=True, nullable=False)
-    Type = db.Column(db.String(20), unique=True, nullable=False)
-    Colour = db.Column(db.String(20), unique=True, nullable=False)
-    Country_Manu = db.Column(db.String(20), unique=True, nullable=False)
-    Upper_Mat = db.Column(db.String(20), unique=True, nullable=False)
-    Lining_Mat = db.Column(db.String(20), unique=True, nullable=False)
-    Insole_Mat = db.Column(db.String(20), unique=True, nullable=False)
-    Heel_Height = db.Column(db.Integer, unique=True, nullable=False)
-    Weight = db.Column(db.Integer, unique=True, nullable=False)
-    Height = db.Column(db.Integer, unique=True, nullable=False)
-    Length = db.Column(db.Integer, unique=True, nullable=False)
-    Depth = db.Column(db.Integer, unique=True, nullable=False)
-    PurchaseOrder = db.Column(db.String(200), nullable=False)
-    Label = db.Column(db.String(20), unique=True, nullable=False)
-    Kids_Sizes = db.Column(db.Integer, unique=True, nullable=False)
-    Adult_Sizes = db.Column(db.Integer, unique=True, nullable=False)
+
+
+
+
 
     def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
+        return f"Post('{self.user_id}', '{self.date_posted}')"
