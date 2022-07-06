@@ -1,12 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>Sif Data Entry</h1>
-<form method=['GET','POST']action="/">
+
+<<!-- create a form to enter data and post that data to Entry -->
+
+
+<form method="POST" action="" enctype="multipart/form-data">
+
+
+
+
+
     <h8>{{ form.Date}} {{ form.Time}}</h8>
     <h7>User:</h7>
     <p>{{ current_user.username }}</p>
     <br/>
-    {{ form.SKU.label }} float {{ form.SKU(size=20) }}
+        <!-- center the form  align the fields-->
+
+    <div class="form-group">
+     {{ form.SKU.label }} float {{ form.SKU(size=20) }}
     <br/>
     {{ form.Parent.label }} {{ form.Parent}}
     <br/>
@@ -32,6 +44,8 @@
     <br/>
     {{ form.Heel_Height.label}} {{form.Heel_Height}}
     <br/>
+
+    <br/>
     {{ form.Weight.label}} {{form.Weight}}
     <br/>
     {{ form.Height.label}} {{ form.Height }}
@@ -42,12 +56,17 @@
     <br/>
     {{ form.PurchaseOrder.label}} {{form.PurchaseOrder}}
     <br/>
-    {{ form.Label.label}}{{form.Label}}
     <br/>
+    {{ form.Label.label}}   <br/>    {{form.Label}}
+    <br/>
+
+
     {{ form.Kids_Sizes.label}} {{form.Kids_Sizes}}
     <br/>
     {{ form.Adult_Sizes.label}} {{form.Adult_Sizes}}
     <br/>
+
+
 
 
 

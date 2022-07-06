@@ -25,6 +25,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    Author = db.Column(db.String(20), unique=True, nullable=False)
     SKU = db.Column(db.Integer, unique=True, nullable=False)
     Parent = db.Column(db.Boolean)
     Brand = db.Column(db.Integer, nullable=False)

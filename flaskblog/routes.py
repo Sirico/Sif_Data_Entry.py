@@ -1,21 +1,25 @@
 import os
 import secrets
+
+import datetime as datetime
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, jsonify
 from pip._internal.utils import datetime
 
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Entry
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Entry, User
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 import flask_excel as excel
 import pandas as pd
+import datetime
+
+# Variables
+
 
 posts = [
     'Welcome'
 ]
-xlsx = '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/test.xlsx'
-csv = '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/test.csv'
 
 
 @app.route("/")
@@ -117,57 +121,34 @@ def page_not_found(e):
 @login_required
 def entry():
     form = Entry()
-#If entry form is submitted
-    if form.validate_on_submit():
 
-        post = Post(SKU=form.SKU.data,
-                    Parent=form.Parent.data,
-                    Author=current_user,
-                    Brand=form.Brand.data,
-                    Gender=form.Gender.data,
-                    Closure=form.Closure.data,
-                    Model=form.Model.data,
-                    Type=form.Type.data,
-                    Colour=form.Colour.data,
-                    Country_Manu=form.Country_Manu.data,
-                    Upper_Mat=form.Upper_Mat.data,
-                    Lining_Mat=form.Lining_Mat.data,
-                    Insole_Mat=form.Insole_Mat.data,
-                    Heel_Height=form.Heel_Height.data,
-                    Weight=form.Weight.data,
-                    Height=form.Height.data,
-                    Length=form.Length.data,
-                    Depth=form.Depth.data,
-                    PurchaseOrder=form.PurchaseOrder.data,
-                    Label=form.Label.data,
-                    Kids_Sizes=form.Kids_Sizes.data,
-                    Adult_Sizes=form.Adult_Sizes.data, )
-        # add all values of post to excel file add a new row for every KIDS_Sizes and  Adult_Sizes.
-        # for i in range(len(form.Kids_Sizes.data)):
-        # post.Kids_Sizes = form.Kids_Sizes.data[i]
-        # for i in range(len(form.Adult_Sizes.data)):
-        # post.Adult_Sizes = form.Adult_Sizes.data[i]
+    # If entry form is submitted
+    if form.submit():
+        # write form data to an excel file, for every size create a new row in the excel file
 
-        # create an excel file with the columns and data of the post on new row
-        df = pd.DataFrame(columns=['SKU', 'Parent', 'Author'], index=[[post.SKU, post.Parent, post.Author]])
+        df = pd.DataFrame(form.data, index=[0])
 
+        # create a variable use data from form.SKU.data
+        User = current_user.username
+        SKU = request.form.get('SKU')
+        time = (datetime.datetime.now().strftime("%H:%M:%S"))
+        date = (datetime.date.today().strftime("%d-%m-%Y"))
+        exports = 'static/exports'
+        xlsx = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.xlsx'
+        csv = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.csv'
+        # add to database
+        # db.session.add(entry)
+        # db.session.commit()
 
+        df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),columns=form.data, index=form.data , startrow=len(df))
+##################################################################
+        # for every Kids size and Adult size in the form create a new row in the excel file and copy the data from the form
+        #for i in range(1, 6):
 
+        #df.loc[i] = [form.Kids_Sizes[i - 1].data, form.Adult_Sizes[i - 1].data]
+        #df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),
+         #           columns=[form.data], index=False, startrow=len(df))
+        #df.to_csv(csv, index=False)
+        #return redirect(url_for('home'))
 
-
-
-
-
-
-
-        print(df)
-        # write post data to excel file with sheet name as current_user.username and datetime
-        df.to_excel(xlsx, sheet_name=current_user.username, index=False)
-
-        # write csv file
-        df.to_csv(csv, index=False)
-
-        return render_template('entry.html', title='Entry', form=form)
-
-    else:
-        return render_template('entry.html', title='Entry', form=form)
+    return render_template('entry.html', title='Entry', form=form)
