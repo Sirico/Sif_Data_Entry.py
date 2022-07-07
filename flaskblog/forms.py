@@ -105,6 +105,5 @@ class Entry(FlaskForm):
     Adult_Sizes = MultiCheckboxField("Please Select size", choices=['2', '3', '4', '5', '6'])
 
 
-
-
+    # create a submit field
     submit = SubmitField('Submit')

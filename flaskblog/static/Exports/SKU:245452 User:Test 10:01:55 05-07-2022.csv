@@ -1,2 +1,0 @@
-SKU,Parent,Author,Brand,Gender,Closure,Model,Type,Colour,Country_Manu,Upper_Mat,Lining_Mat,Insole_Mat,Heel_Height,Weight,Height,Length,Depth,PurchaseOrder,Label,Kids_Sizes,Adult_Sizes,submit,csrf_token
-245452,True,,test,Female,test,12341324,test,test,,,,test,1,1,1,1,1,1234,test,2,2,True,
