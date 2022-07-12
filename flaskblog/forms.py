@@ -60,10 +60,33 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
 
+#
+# class MultiCheckboxField(SelectMultipleField):
+#     widget = widgets.ListWidget(prefix_label=False)
+#     option_widget = widgets.CheckboxInput()
+# create a multi-checkbox field for multiple sizes
 
+# class MultiCheckboxField(SelectMultipleField):
+#     widget = widgets.ListWidget(prefix_label=False)
+#     option_widget = widgets.CheckboxInput()
+#     # override the default get_label method to add the '$' symbol
+#     def get_label(self, option):
+#         return '%s' % option
+
+
+
+# create a multi-checkbox field for multiple sizes that keeps all arrays in the same length.
 class MultiCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()
+    # override the default get_label method to add the '$' symbol
+    def get_label(self, option):
+        return '%s' % option
+
+
+
+
+
 
 
 date = datetime.now()
@@ -73,6 +96,12 @@ date = datetime.now()
 
 # Entry form content
 class Entry(FlaskForm):
+
+  #
+
+
+
+
     User = current_user
     Date = date.strftime("%a"' ' "%b" ' ' '%d' ' ' '%Y')
     Time = date.strftime("%R")
@@ -80,7 +109,6 @@ class Entry(FlaskForm):
     Parent = BooleanField('Is this a parent SKU?', default='unchecked')
     # create an author field using current_user.id
     Author = StringField("Author", validators=[DataRequired()])
-
 
 
     #Brand with choices from choices.py
@@ -101,8 +129,9 @@ class Entry(FlaskForm):
     Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
     PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
-    Kids_Sizes = MultiCheckboxField("Please Select size", choices=['2', '3', '4', '5', '6'])
-    Adult_Sizes = MultiCheckboxField("Please Select size", choices=['2', '3', '4', '5', '6'])
+    Kids_Sizes = MultiCheckboxField("Please Select Kids size", choices=['2', '3', '4', '5', '6'])
+    Adult_Sizes = MultiCheckboxField("Please Select Adult size", choices=['2', '3', '4', '5', '6'])
+
 
 
     # create a submit field

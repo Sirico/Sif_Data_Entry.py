@@ -121,14 +121,37 @@ def page_not_found(e):
 # Entry form
 @app.route('/entry', methods=['GET', 'POST'])
 @login_required
-def entry():
+def entry(df=None):
     form = Entry()
 
     # If entry form is submitted
     # if form.submit():
     if request.method == 'POST':
-        print (form.Adult_Sizes.data)
+        print(form.Adult_Sizes.data)
+        print(form.Kids_Sizes.data)
         # write form data to an excel file, for every size create a new row in the excel file
+
+        # if length of form.Kids_Sizes.data and form.Adult_Sizes.data are not equal make them equal.
+
+        if form.Kids_Sizes.data == None:
+            form.Kids_Sizes.data = ['']
+        if form.Adult_Sizes.data == None:
+            form.Adult_Sizes.data = ['']
+        if len(form.Kids_Sizes.data) != len(form.Adult_Sizes.data):
+            if len(form.Kids_Sizes.data) > len(form.Adult_Sizes.data):
+                for i in range(len(form.Kids_Sizes.data) - len(form.Adult_Sizes.data)):
+                    if form.Kids_Sizes.data is None:
+                        form.Kids_Sizes.data = ['']
+
+                    form.Adult_Sizes.data.append('')
+
+
+            else:
+                for i in range(len(form.Adult_Sizes.data) - len(form.Kids_Sizes.data)):
+                    if form.Adult_Sizes.data is None:
+                        form.Adult_Sizes.data = ['']
+                    form.Kids_Sizes.data.append('')
+
 
         df = pd.DataFrame(form.data)
 
@@ -146,54 +169,61 @@ def entry():
                      form.Length.data, form.Depth.data, form.PurchaseOrder.data, form.Label.data, form.Kids_Sizes.data,
                      form.Adult_Sizes.data,
                      form.submit.data]
-        df = pd.DataFrame({form_data})
+
+        # df = pd.DataFrame({form_data})
         # add to database
         # db.session.add(entry)
         # db.session.commit()
         # df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),columns=form.data, index=form.data , startrow=len(df))
 
-        # If the parent box is checked add another row to df
+        # If the parent box is checked add another row to df. Remove True from df2 parent box
         if form.Parent.data == True:
-            df1 = pd.DataFrame(form.data)
-            df2 = pd.DataFrame(form.data)
+            # copy the sku and the word parent into the Parent column cell
+            df['Parent'] = 'Parent'+df['SKU'].map(str)
+        elif form.Parent.data == False:
+            df['Parent'] = ''
+
+
+
+            # add the parent column to the df
+
+            # df1 = pd.DataFrame(form.data)
+
+            # df2 = pd.DataFrame(form.data)
+            # df2.drop(df2.columns[1], axis=1, inplace=True)
+
             # add df2 to df1 as a new row
-            df = df1.append(df2)
-        # for each size in kids and Adults that is checked create a new row in the DataFrame
-        if form.Kids_Sizes.data == True:
-            df3 = pd.DataFrame(form.data)
-            df = df.append(df3)
-        if form.Adult_Sizes.data == True:
-            df4 = pd.DataFrame(form.data)
+            # df = df.append(df2)
+
+            # Copy a new row for every multicheckbox item.
+
+        for i in range(len(form.Kids_Sizes.data)):
+                # create a new row drop last two columns
+                df2 = pd.DataFrame(form.data)
+
+                df3 = pd.DataFrame(form.data)
+                df3.drop(df3.columns[1], axis=1, inplace=True)
+
+                # join the new row to the end of the dataframe
+                df = df.append(df3)
+
+
+        for i in range(len(form.Adult_Sizes.data)):
+
+                # create a new row
+
+            df4 = pd.DataFrame()
+
+
+
+                # join the new row to the df
             df = df.append(df4)
 
 
-        # for every size in kids and Adults create a new row in the DataFrame
 
 
-            df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),
-                        columns=form.data, index=form.data, startrow=len(df))
-            df.to_csv(csv, index=False)
-        else:
-            df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),
-                        columns=form.data, index=form.data, startrow=len(df))
-            df.to_csv(csv, index=False)
-
-
-
-
-
-
-
-
-
-
-
-        # every mutltiplecheckbox is a list, so we need to loop through the list and append to df
-
-
-###write the files to the exports folder
-        # df.to_csv(csv, index=False)
-        # df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), columns=form.data,
-        #              index=form.data, startrow=len(df))
+        df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),
+                        columns=form.data, index=False)
+        df.to_csv(csv, index=False)
 
     return render_template('entry.html', title='Entry', form=form)
