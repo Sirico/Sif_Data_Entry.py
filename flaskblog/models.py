@@ -47,6 +47,8 @@ class Post(db.Model):
     Label = db.Column(db.String(20), unique=True, nullable=False)
     Kids_Sizes = db.Column(db.Integer, unique=True, nullable=False)
     Adult_Sizes = db.Column(db.Integer, unique=True, nullable=False)
+    Sizes = db.Column(db.Integer, nullable=False)
+
 
 
 

@@ -131,6 +131,8 @@ class Entry(FlaskForm):
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
     Kids_Sizes = MultiCheckboxField("Please Select Kids size", choices=['2', '3', '4', '5', '6'])
     Adult_Sizes = MultiCheckboxField("Please Select Adult size", choices=['2', '3', '4', '5', '6'])
+    Sizes = (Kids_Sizes, Adult_Sizes)
+
 
 
 

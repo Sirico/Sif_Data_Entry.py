@@ -152,7 +152,6 @@ def entry(df=None):
                         form.Adult_Sizes.data = ['']
                     form.Kids_Sizes.data.append('')
 
-
         df = pd.DataFrame(form.data)
 
         # create a variable use data from form.SKU.data
@@ -160,6 +159,7 @@ def entry(df=None):
         SKU = request.form.get('SKU')
         time = (datetime.datetime.now().strftime("%H:%M:%S"))
         date = (datetime.date.today().strftime("%d-%m-%Y"))
+        Author = current_user.username
         exports = 'static/exports'
         xlsx = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.xlsx'
         csv = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.csv'
@@ -178,52 +178,42 @@ def entry(df=None):
 
         # If the parent box is checked add another row to df. Remove True from df2 parent box
         if form.Parent.data == True:
-            # copy the sku and the word parent into the Parent column cell
-            df['Parent'] = 'Parent'+df['SKU'].map(str)
+            # copy the sku and the word parent into the first row Parent column cell
+
+
+            df['Parent'] = 'Parent'
+            #for every other line copy the SKU into the Parent column cell
+            for i in range(1, len(df)):
+                df.loc[i, 'Parent'] = df.loc[i, 'SKU']
+            # if there's more than one row in df add SKU and size to the next rows
+            if len(df) > 1:
+                for i in range(1, len(df)):
+                    df.loc[i, 'SKU'] = df.loc[i, 'SKU'] + '_'+form.Kids_Sizes.data[i]
+
+
+
+            # set the parent column blank
+            df['Parent'] = df['Parent'].fillna('')
+
+        # if the parent is not checked then leave it blank
         elif form.Parent.data == False:
-            df['Parent'] = ''
+            df['Parent'] = ''nc
+
+        # Add current user to the Author column
+        df['Author'] = current_user.username
+
+        # add a row that called sizes that combines the kids and adult sizes
+        df['Sizes'] = df['Kids_Sizes'].str.cat(df['Adult_Sizes'], sep=', ')
 
 
 
-            # add the parent column to the df
-
-            # df1 = pd.DataFrame(form.data)
-
-            # df2 = pd.DataFrame(form.data)
-            # df2.drop(df2.columns[1], axis=1, inplace=True)
-
-            # add df2 to df1 as a new row
-            # df = df.append(df2)
-
-            # Copy a new row for every multicheckbox item.
-
-        for i in range(len(form.Kids_Sizes.data)):
-                # create a new row drop last two columns
-                df2 = pd.DataFrame(form.data)
-
-                df3 = pd.DataFrame(form.data)
-                df3.drop(df3.columns[1], axis=1, inplace=True)
-
-                # join the new row to the end of the dataframe
-                df = df.append(df3)
-
-
-        for i in range(len(form.Adult_Sizes.data)):
-
-                # create a new row
-
-            df4 = pd.DataFrame()
 
 
 
-                # join the new row to the df
-            df = df.append(df4)
-
-
-
+        # write the data to files
 
         df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),
-                        columns=form.data, index=False)
+                    columns=form.data, index=False)
         df.to_csv(csv, index=False)
 
     return render_template('entry.html', title='Entry', form=form)
