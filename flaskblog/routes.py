@@ -216,4 +216,5 @@ def entry(df=None):
                     columns=form.data, index=False)
         df.to_csv(csv, index=False)
 
+
     return render_template('entry.html', title='Entry', form=form)
