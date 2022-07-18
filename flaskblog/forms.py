@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateTimeField, RadioField, SelectField, \
-    IntegerField, SelectMultipleField, DateField, validators
+    IntegerField, SelectMultipleField, DateField, validators,  TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 import flaskblog
 from flaskblog import choices
@@ -93,15 +93,27 @@ date = datetime.now()
 
 
 
+# Entry Form with a button for Adults and a button for Kids
+class Entry(FlaskForm):
+    Adults = SubmitField('Adults')
+    Kids = SubmitField('Kids')
+
+class Adults(FlaskForm):
+    Adult_Footwear = RadioField('Adult_Footwear', choices=choices.Adult_Footwear,)
+
+    Adult_Clothing = RadioField('Adult_Clothing', choices=choices.Adult_Clothing)
+
+class Kids(FlaskForm):
+    Kids_Footwear = RadioField('Kids_Footwear', choices=choices.Kids_Footwear)
+    Kids_Clothing = RadioField('Kids_Clothing', choices=choices.Kids_Clothing)
+
+
+
+
+
 
 # Entry form content
-class Entry(FlaskForm):
-
-  #
-
-
-
-
+class Adults_Footwear(FlaskForm):
     User = current_user
     Date = date.strftime("%a"' ' "%b" ' ' '%d' ' ' '%Y')
     Time = date.strftime("%R")
@@ -110,15 +122,16 @@ class Entry(FlaskForm):
     # create an author field using current_user.id
     Author = StringField("Author", validators=[DataRequired()])
 
+    # Brand with choices from choices.py
 
-    #Brand with choices from choices.py
-    Brand = SelectField("Brand", choices=['test'], validators=[DataRequired()])
+    Brand = SelectField("Brand", choices=choices.Brand, validators=[DataRequired()])
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
     Closure = SelectField("Select Closure Type", choices=['', 'test'], validators=[DataRequired()])
     Model = StringField("Select Model", validators=[DataRequired()])
     Type = SelectField("Select Type", choices=['', 'test'], validators=[DataRequired()])
-    Colour = SelectField("Select main colour", choices=['test'], validators=[DataRequired()])
-    Country_Manu = SelectField("Select the country of manufacture", choices=['', 'test'], validators=[DataRequired()])
+    Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
+    Country_Manu = SelectField("Select the country of manufacture", choices=choices.Country,
+                               validators=[DataRequired()])
     Upper_Mat = SelectField("Select the upper material", choices=['', 'Leather'], validators=[DataRequired()])
     Lining_Mat = SelectField("Select the lining material", choices=['', 'test'], validators=[DataRequired()])
     Insole_Mat = SelectField("Select the insole material", choices=['', 'test'], validators=[DataRequired()])
@@ -129,12 +142,64 @@ class Entry(FlaskForm):
     Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
     PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
-    Kids_Sizes = MultiCheckboxField("Please Select Kids size", choices=['2', '3', '4', '5', '6'])
-    Adult_Sizes = MultiCheckboxField("Please Select Adult size", choices=['2', '3', '4', '5', '6'])
-    Sizes = (Kids_Sizes, Adult_Sizes)
+    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Adult_Footwear, validators=[DataRequired()])
 
 
 
 
-    # create a submit field
-    submit = SubmitField('Submit')
+
+
+
+
+
+
+# Entry form content
+class Kids_Footwear(FlaskForm):
+
+
+
+
+
+        User = current_user
+        Date = date.strftime("%a"' ' "%b" ' ' '%d' ' ' '%Y')
+        Time = date.strftime("%R")
+        SKU = StringField("SKU", validators=[DataRequired()])
+        Parent = BooleanField('Is this a parent SKU?', default='unchecked')
+        # create an author field using current_user.id
+        Author = StringField("Author", validators=[DataRequired()])
+
+        # Brand with choices from choices.py
+
+        Brand = SelectField("Brand", choices=choices.Brand, validators=[DataRequired()])
+        Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
+        Closure = SelectField("Select Closure Type", choices=['', 'test'], validators=[DataRequired()])
+        Model = StringField("Select Model", validators=[DataRequired()])
+        Type = SelectField("Select Type", choices=['', 'test'], validators=[DataRequired()])
+        Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
+        Country_Manu = SelectField("Select the country of manufacture", choices=choices.Country,
+                                   validators=[DataRequired()])
+        Upper_Mat = SelectField("Select the upper material", choices=['', 'Leather'], validators=[DataRequired()])
+        Lining_Mat = SelectField("Select the lining material", choices=['', 'test'], validators=[DataRequired()])
+        Insole_Mat = SelectField("Select the insole material", choices=['', 'test'], validators=[DataRequired()])
+        Heel_Height = IntegerField("Input the heel height in cm", validators=[DataRequired()])
+        Weight = IntegerField("Input the weight in KG", validators=[DataRequired()])
+        Height = IntegerField("Input the products height in cm", validators=[DataRequired()])
+        Length = IntegerField("Input the products length in cm", validators=[DataRequired()])
+        Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
+        PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
+        Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
+        Sizes = MultiCheckboxField("Select the sizes", choices=choices.Kids_Footwear)
+
+
+
+
+
+
+
+
+
+
+
+
+
+        submit = SubmitField('Submit')

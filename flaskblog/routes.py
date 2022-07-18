@@ -9,12 +9,15 @@ from flask import render_template, url_for, flash, redirect, request, jsonify
 from pip._internal.utils import datetime
 
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Entry, User
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Adults, Kids, Adults_Footwear, Kids_Footwear
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
+
 import flask_excel as excel
 import pandas as pd
 import datetime
+from flaskblog import choices
+from flaskblog import forms
 
 # Variables
 
@@ -118,39 +121,41 @@ def page_not_found(e):
     return render_template("500.html"), 500
 
 
-# Entry form
+# Entry form to select between kids and adults
 @app.route('/entry', methods=['GET', 'POST'])
 @login_required
 def entry(df=None):
-    form = Entry()
+    form = entry
 
-    # If entry form is submitted
-    # if form.submit():
+    return render_template('entry.html', title='Entry', form=form)
+
+
+# Adult entry form with a button for adultsfootwear and adults_clothing
+@app.route('/adults', methods=['GET', 'POST'])
+@login_required
+def adults(df=None):
+    form = Adults()
+    return render_template('adults.html', title='Adults', form=form)
+
+
+# Kids entry form with a button for kidsfootwear and kids_clothing
+@app.route('/kids', methods=['GET', 'POST'])
+@login_required
+def kids(df=None):
+
+    return render_template('kids.html', posts=posts)
+
+
+
+
+
+# Adults shoe sizes
+@app.route('/adults-footwear', methods=['GET', 'POST'])
+@login_required
+def adults_footwear():
+    form = Adults_Footwear()
     if request.method == 'POST':
-        print(form.Adult_Sizes.data)
-        print(form.Kids_Sizes.data)
         # write form data to an excel file, for every size create a new row in the excel file
-
-        # if length of form.Kids_Sizes.data and form.Adult_Sizes.data are not equal make them equal.
-
-        if form.Kids_Sizes.data == None:
-            form.Kids_Sizes.data = ['']
-        if form.Adult_Sizes.data == None:
-            form.Adult_Sizes.data = ['']
-        if len(form.Kids_Sizes.data) != len(form.Adult_Sizes.data):
-            if len(form.Kids_Sizes.data) > len(form.Adult_Sizes.data):
-                for i in range(len(form.Kids_Sizes.data) - len(form.Adult_Sizes.data)):
-                    if form.Kids_Sizes.data is None:
-                        form.Kids_Sizes.data = ['']
-
-                    form.Adult_Sizes.data.append('')
-
-
-            else:
-                for i in range(len(form.Adult_Sizes.data) - len(form.Kids_Sizes.data)):
-                    if form.Adult_Sizes.data is None:
-                        form.Adult_Sizes.data = ['']
-                    form.Kids_Sizes.data.append('')
 
         df = pd.DataFrame(form.data)
 
@@ -166,55 +171,139 @@ def entry(df=None):
         form_data = [form.SKU.data, form.Parent.data, form.Brand.data, form.Gender.data, form.Closure.data,
                      form.Model.data, form.Type.data, form.Colour.data, form.Country_Manu.data, form.Upper_Mat.data,
                      form.Lining_Mat.data, form.Insole_Mat.data, form.Heel_Height.data, form.Weight.data,
-                     form.Length.data, form.Depth.data, form.PurchaseOrder.data, form.Label.data, form.Kids_Sizes.data,
-                     form.Adult_Sizes.data,
+                     form.Length.data, form.Depth.data, form.PurchaseOrder.data, form.Label.data,
+                     form.Sizes.data,
                      form.submit.data]
-
-        # df = pd.DataFrame({form_data})
-        # add to database
-        # db.session.add(entry)
-        # db.session.commit()
-        # df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),columns=form.data, index=form.data , startrow=len(df))
 
         # If the parent box is checked add another row to df. Remove True from df2 parent box
         if form.Parent.data == True:
             # copy the sku and the word parent into the first row Parent column cell
 
-
             df['Parent'] = 'Parent'
-            #for every other line copy the SKU into the Parent column cell
+            # for every other line create a blank into the Parent column cell
             for i in range(1, len(df)):
-                df.loc[i, 'Parent'] = df.loc[i, 'SKU']
+                df.loc[i, 'Parent'] = ''
+
             # if there's more than one row in df add SKU and size to the next rows
             if len(df) > 1:
                 for i in range(1, len(df)):
-                    df.loc[i, 'SKU'] = df.loc[i, 'SKU'] + '_'+form.Kids_Sizes.data[i]
+                    df.loc[i, 'SKU'] = df.loc[i, 'SKU'] + '_' + form.Sizes.data[i]
+
+    return render_template('adults_footwear.html', title='Adults Footwear', form=form)
+
+
+# Kids shoe sizes
+@app.route('/kids_footwear', methods=['GET', 'POST'])
+@login_required
+def kids_footwear():
+    form = Kids_Footwear()
+    if request.method == 'POST':
+        # write form data to an excel file, for every size create a new row in the excel file
+
+        df = pd.DataFrame(form.data)
+
+        # create a variable use data from form.SKU.data
+        User = current_user.username
+        SKU = request.form.get('SKU')
+        time = (datetime.datetime.now().strftime("%H:%M:%S"))
+        date = (datetime.date.today().strftime("%d-%m-%Y"))
+        Author = current_user.username
+        exports = 'static/exports'
+        xlsx = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.xlsx'
+        csv = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.csv'
+        form_data = [form.SKU.data, form.Parent.data, form.Brand.data, form.Gender.data, form.Closure.data,
+                     form.Model.data, form.Type.data, form.Colour.data, form.Country_Manu.data, form.Upper_Mat.data,
+                     form.Lining_Mat.data, form.Insole_Mat.data, form.Heel_Height.data, form.Weight.data,
+                     form.Length.data, form.Depth.data, form.PurchaseOrder.data, form.Label.data,
+                     form.Sizes.data,
+                     form.submit.data]
+        df_1str = df.iloc[0]
+
+
+        # If the parent box is checked add another row to df. Remove True from df2 parent box
+        if form.Parent.data == True:
+
+
+
+
+
+
+
+
+
+
+
+
+
+            # copy first row
+            df_1 = df.iloc[0]
+            # create a new row in df
+            df_2 = df.iloc[1]
+            pd.concat((df_1[:1], df_2[:1], df[1:]))
+
+
+            # copy the sku and the word parent into the first row Parent column cell
+
+            df['Parent'] = 'Parent'
+            # for every other line create a blank into the Parent column cell
+            for i in range(1, len(df)):
+                df.loc[i, 'Parent'] = ''
+
+            # if there's more than one row in df add SKU and size to the next rows
+            if len(df) > 1:
+                for i in range(1, len(df)):
+                    df.loc[i, 'SKU'] = df.loc[i, 'SKU'] + '_' + form.Sizes.data[i]
+
+            #drop the parent cell
+
+            df.append(df_1str, ignore_index=True,)
+            df.drop(df.columns[0], axis=1, inplace=True)
+
+
+
+
+
 
 
 
             # set the parent column blank
             df['Parent'] = df['Parent'].fillna('')
 
-        # if the parent is not checked then leave it blank
+
+
+        # # if the parent is not checked then leave it blank
         elif form.Parent.data == False:
-            df['Parent'] = ''nc
+            df['Parent'] = ''
 
         # Add current user to the Author column
         df['Author'] = current_user.username
 
-        # add a row that called sizes that combines the kids and adult sizes
-        df['Sizes'] = df['Kids_Sizes'].str.cat(df['Adult_Sizes'], sep=', ')
+        #
+        df_1 = df.iloc[1]
+        # copy the first row and paste it under the first row
+        df_2 = df.iloc[0]
+        pd.concat((df_1[:1], df_2[:1], df[1:]))
 
 
 
 
 
+        print (df)
+
+
+        # duplicate the first row and append it to the top of the dataframe
+
+
+
+
+
+
+        # remove last two columns from df
+        df.drop(df.columns[-2:], axis=1, inplace=True)
 
         # write the data to files
 
-        df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()),
-                    columns=form.data, index=False)
+        df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
         df.to_csv(csv, index=False)
 
-
-    return render_template('entry.html', title='Entry', form=form)
+    return render_template('Kids_Footwear.html', title='Kids Footwear', form=form)

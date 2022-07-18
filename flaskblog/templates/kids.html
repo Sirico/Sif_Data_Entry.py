@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for post in posts %}
+
+    <!-- Create two yellow buttons with black text in the center of the page -->
+    <h1>Please choose type of garment</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <a href="/kids_footwear" class="btn btn-warning btn-lg btn-block">Footwear</a>
+        </div>
+        <div class="col-md-6">
+            <a href="/kids_clothing" class="btn btn-warning btn-lg btn-block">Clothing</a>
+
+        </div>
+
+
+
+
+    {% endfor %}
+{% endblock content %}
+
+

@@ -45,8 +45,6 @@ class Post(db.Model):
     Depth = db.Column(db.Integer, nullable=False)
     PurchaseOrder = db.Column(db.String(200), nullable=False)
     Label = db.Column(db.String(20), unique=True, nullable=False)
-    Kids_Sizes = db.Column(db.Integer, unique=True, nullable=False)
-    Adult_Sizes = db.Column(db.Integer, unique=True, nullable=False)
     Sizes = db.Column(db.Integer, nullable=False)
 
 
