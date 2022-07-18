@@ -233,27 +233,13 @@ def kids_footwear():
 
 
 
-            # copy the sku and the word parent into the first row Parent column cell
+            # copy the sku and the word parent only to the first row Parent column cell
+
 
             df['Parent'] = 'Parent'
             # for every other line create a blank into the Parent column cell
             for i in range(1, len(df)):
                 df.loc[i, 'Parent'] = ''
-
-            # copy first row without parent in the column
-
-            df = df.append(df.iloc[0, :])
-            # #move eveything down one row aprat to the first row
-            # df = df.iloc[1:, :]
-            # # move the last row to the second row
-            # df = df.append(df.iloc[-1, :])
-            # #
-            #
-            # df.loc[1, 'Sizes'] = ''
-
-
-
-
 
             # if there's more than one row in df add SKU and size to the next rows
             if len(df) > 1:
@@ -262,8 +248,23 @@ def kids_footwear():
 
             # drop the parent cell
 
-            df.append(df_1str, ignore_index=True, )
+            df.append(df_1str, ignore_index=False, )
             df.drop(df.columns[0], axis=1, inplace=True)
+
+            # copy first row
+            df = df.append(df.iloc[0, :])
+            #move eveything down row apart from the first row
+
+
+            df = df.iloc[1:, :]
+            # move the last row to the second row
+            df = df.append(df.iloc[-1, :])
+
+
+
+
+
+
 
 
 
@@ -279,6 +280,11 @@ def kids_footwear():
 
             # set the parent column blank
             df['Parent'] = df['Parent'].fillna('')
+
+            # move last two rows to the first row
+
+
+
 
 
             # remove last two columns from df
@@ -296,9 +302,6 @@ def kids_footwear():
 
 
 
-
-            # set the parent column blank
-            df['Parent'] = df['Parent'].fillna('')
 
 
             # remove last two columns from df
