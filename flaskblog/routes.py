@@ -142,11 +142,7 @@ def adults(df=None):
 @app.route('/kids', methods=['GET', 'POST'])
 @login_required
 def kids(df=None):
-
     return render_template('kids.html', posts=posts)
-
-
-
 
 
 # Adults shoe sizes
@@ -219,6 +215,8 @@ def kids_footwear():
                      form.submit.data]
         df_1str = df.iloc[0]
 
+        # Add current user to the Author column
+        df['Author'] = current_user.username
 
         # If the parent box is checked add another row to df. Remove True from df2 parent box
         if form.Parent.data == True:
@@ -235,13 +233,6 @@ def kids_footwear():
 
 
 
-            # copy first row
-            df_1 = df.iloc[0]
-            # create a new row in df
-            df_2 = df.iloc[1]
-            pd.concat((df_1[:1], df_2[:1], df[1:]))
-
-
             # copy the sku and the word parent into the first row Parent column cell
 
             df['Parent'] = 'Parent'
@@ -249,15 +240,35 @@ def kids_footwear():
             for i in range(1, len(df)):
                 df.loc[i, 'Parent'] = ''
 
+            # copy first row without parent in the column
+
+            df = df.append(df.iloc[0, :])
+            # #move eveything down one row aprat to the first row
+            # df = df.iloc[1:, :]
+            # # move the last row to the second row
+            # df = df.append(df.iloc[-1, :])
+            # #
+            #
+            # df.loc[1, 'Sizes'] = ''
+
+
+
+
+
             # if there's more than one row in df add SKU and size to the next rows
             if len(df) > 1:
                 for i in range(1, len(df)):
                     df.loc[i, 'SKU'] = df.loc[i, 'SKU'] + '_' + form.Sizes.data[i]
 
-            #drop the parent cell
+            # drop the parent cell
 
-            df.append(df_1str, ignore_index=True,)
+            df.append(df_1str, ignore_index=True, )
             df.drop(df.columns[0], axis=1, inplace=True)
+
+
+
+
+
 
 
 
@@ -270,47 +281,41 @@ def kids_footwear():
             df['Parent'] = df['Parent'].fillna('')
 
 
+            # remove last two columns from df
+            df.drop(df.columns[-2:], axis=1, inplace=True)
+            df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
+            df.to_csv(csv, index=False)
+
+
 
         # # if the parent is not checked then leave it blank
         elif form.Parent.data == False:
             df['Parent'] = ''
-            # copy the first row and paste into the second row using pd.concat
-            df_1 = df.iloc[1]
-            df_2 = df.iloc[1]
-            pd.concat((df_1[:1], df_2[:1], df[1:]))
+
+
+
+
+
+
+            # set the parent column blank
+            df['Parent'] = df['Parent'].fillna('')
+
+
+            # remove last two columns from df
+            df.drop(df.columns[-2:], axis=1, inplace=True)
+            df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
+            df.to_csv(csv, index=False)
+
+
 
             # df = df.reindex(df.index[1:,1:])
 
 
-        # Add current user to the Author column
-        df['Author'] = current_user.username
 
-
-
-
-
-
-
-
-
-
-
-        print (df)
-
-
-        # duplicate the first row and append it to the top of the dataframe
-
-
-
-
-
-
-        # remove last two columns from df
-        df.drop(df.columns[-2:], axis=1, inplace=True)
 
         # write the data to files
 
-        df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
-        df.to_csv(csv, index=False)
+        # df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
+        # df.to_csv(csv, index=False)
 
     return render_template('Kids_Footwear.html', title='Kids Footwear', form=form)
