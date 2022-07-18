@@ -1,6 +1,0 @@
-SKU,Parent,Author,Brand,Gender,Closure,Model,Type,Colour,Country_Manu,Upper_Mat,Lining_Mat,Insole_Mat,Heel_Height,Weight,Height,Length,Depth,PurchaseOrder,Label,Kids_Sizes,Adult_Sizes,Sizes,submit
-46ur6u,Parent,Test,Asics,Male,test,3456,test,Pink,test,Leather,test,test,1,1,1,1,1,1,test,,,,True
-46ur6u,True,Test,Asics,Male,test,3456,test,Pink,test,Leather,test,test,1,1,1,1,1,1,test,3,,3,True
-46ur6u,True,Test,Asics,Male,test,3456,test,Pink,test,Leather,test,test,1,1,1,1,1,1,test,4,,4,True
-46ur6u,True,Test,Asics,Male,test,3456,test,Pink,test,Leather,test,test,1,1,1,1,1,1,test,5,,5,True
-46ur6u,True,Test,Asics,Male,test,3456,test,Pink,test,Leather,test,test,1,1,1,1,1,1,test,6,,6,True
