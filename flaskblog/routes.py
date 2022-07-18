@@ -274,15 +274,22 @@ def kids_footwear():
         # # if the parent is not checked then leave it blank
         elif form.Parent.data == False:
             df['Parent'] = ''
+            # copy the first row and paste into the second row using pd.concat
+            df_1 = df.iloc[1]
+            df_2 = df.iloc[1]
+            pd.concat((df_1[:1], df_2[:1], df[1:]))
+
+            # df = df.reindex(df.index[1:,1:])
+
 
         # Add current user to the Author column
         df['Author'] = current_user.username
 
-        #
-        df_1 = df.iloc[1]
-        # copy the first row and paste it under the first row
-        df_2 = df.iloc[0]
-        pd.concat((df_1[:1], df_2[:1], df[1:]))
+
+
+
+
+
 
 
 
