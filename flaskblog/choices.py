@@ -85,13 +85,13 @@ Country = ['*Select a Country', 'Afghanistan', 'Aland Islands', 'Albania', 'Alge
            'Virgin Islands, U.S.', 'Wallis and Futuna', 'Yemen', 'Zambia', 'Zimbabwe']
 Country.sort()
 
-Adult_Footwear = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+Adults_Footwear = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 Kids_Footwear = ['1k', '1.5k', '2k', '2.5k', '3k', '3.5k', '4k', '4.5k', '5k', '5.5k', '6k', '6.5k', '7k', '7.5k', '8k',
               '8.5k', '9k', '9.5k', '10k', '10.5k', '11k', '11.5k', '12k', '12.5k', '13k', '13.5k', '1', '1.5', '2',
               '2.5',
               '3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5']
 
-Adult_Clothing = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+Adults_Clothing = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
 Kids_Clothing = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
