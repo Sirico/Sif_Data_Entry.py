@@ -220,6 +220,18 @@ def kids_footwear():
 
         # If the parent box is checked add another row to df. Remove True from df2 parent box
         if form.Parent.data == True:
+            # copy the sku and the word parent into the first row Parent column cell.
+            df1 = df.copy()
+            df1['Parent'] = 'Parent'
+
+            # delete the sizes column of df1
+            del df1['Sizes']
+
+
+
+            # remove every row except the first row
+
+            df1 = df1.iloc[0:1]
 
 
 
@@ -227,38 +239,19 @@ def kids_footwear():
 
 
 
+            #create df2 as the rest of the dataframe
+            df2 = df.iloc[0:]
+            # blank the parent column in df2
+            df2['Parent'] = form.SKU.data
 
 
-
-
-
-
-            # copy the sku and the word parent only to the first row Parent column cell
-
-
-            df['Parent'] = 'Parent'
-            # for every other line create a blank into the Parent column cell
-            for i in range(1, len(df)):
-                df.loc[i, 'Parent'] = ''
 
             # if there's more than one row in df add SKU and size to the next rows
-            if len(df) > 1:
-                for i in range(1, len(df)):
-                    df.loc[i, 'SKU'] = df.loc[i, 'SKU'] + '_' + form.Sizes.data[i]
 
-            # drop the parent cell
-
-            df.append(df_1str, ignore_index=False, )
-            df.drop(df.columns[0], axis=1, inplace=True)
-
-            # copy first row
-            df = df.append(df.iloc[0, :])
-            #move eveything down row apart from the first row
-
-
-            df = df.iloc[1:, :]
-            # move the last row to the second row
-            df = df.append(df.iloc[-1, :])
+            for i in range(0, len(df2)):
+                df2.loc[i, 'SKU'] = df2.loc[i, 'SKU'] + '_' + form.Sizes.data[i]
+            # concatenate df1 and df2
+            df = pd.concat([df1,df2])
 
 
 
@@ -273,24 +266,38 @@ def kids_footwear():
 
 
 
-
-
-
-
-
-            # set the parent column blank
-            df['Parent'] = df['Parent'].fillna('')
-
-            # move last two rows to the first row
-
-
-
-
-
-            # remove last two columns from df
-            df.drop(df.columns[-2:], axis=1, inplace=True)
             df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
             df.to_csv(csv, index=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
