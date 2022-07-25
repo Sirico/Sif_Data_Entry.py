@@ -134,7 +134,10 @@ class Adults_Footwear(FlaskForm):
     Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
     PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
-    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Adults_Footwear, validators=[DataRequired()])
+    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Adults_Footwear)
+
+    submit = SubmitField('Submit')
+    Finish = SubmitField('Finish')
 
 
 # Entry form content
@@ -170,3 +173,9 @@ class Kids_Footwear(FlaskForm):
     Sizes = MultiCheckboxField("Select the sizes", choices=choices.Kids_Footwear)
 
     submit = SubmitField('Submit')
+    Finish = SubmitField('Finish')
+
+
+# form to edit the choices
+class Edit_Choices(FlaskForm):
+    Brands_Edit = TextAreaField("Brands")

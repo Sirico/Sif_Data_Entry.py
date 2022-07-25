@@ -1,11 +1,8 @@
 import flaskblog
 
 # Varible to store the choices for the dropdown menu using popular sportswear brands
-# The choices are stored in a list of tuples
-# The first element of the tuple is the value of the option
-# The second element of the tuple is the text that is displayed in the dropdown menu
-# The third element of the tuple is the image that is displayed in the dropdown menu
-# The fourth element of the tuple is the link to the website that is displayed in the dropdown menu
+
+
 Brand = [
     ('*Select a brand'),
     ('Nike'),

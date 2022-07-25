@@ -2,17 +2,19 @@ import os
 import secrets
 
 import datetime as datetime
+import shutil
 
 import numpy as np
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, jsonify
+from flask_wtf import form
 from pip._internal.utils import datetime
 
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Adults, Kids, Adults_Footwear, Kids_Footwear
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
-
+import os
 import flask_excel as excel
 import pandas as pd
 import datetime
@@ -20,6 +22,8 @@ from flaskblog import choices
 from flaskblog import forms
 
 # Variables
+
+
 
 
 posts = [
@@ -219,7 +223,7 @@ def adults_footwear():
             df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
             df.to_csv(csv, index=False)
 
-    return render_template('Adults_Footwear.html', title='Adults Footwear', form=form)
+    return render_template('Adults-Footwear.html', title='Adults Footwear', form=form)
 
 
 # Kids shoe sizes
@@ -238,15 +242,26 @@ def kids_footwear():
         time = (datetime.datetime.now().strftime("%H:%M:%S"))
         date = (datetime.date.today().strftime("%d-%m-%Y"))
         Author = current_user.username
-        exports = 'static/exports'
-        xlsx = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.xlsx'
-        csv = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.csv'
+
+        User = current_user.username
+        date = (datetime.date.today().strftime("%d-%m-%Y"))
+        directory = f'{form.PurchaseOrder.data}:{date}'
+        parent_dir = '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports'
+        path = os.path.join(parent_dir, directory)
+        try:
+            os.mkdir(path, 0o777)
+        except OSError:
+            pass
+
+        xlsx = f'SKU:{SKU} User:{User} {time} {date}.xlsx'
+        csv = f'SKU:{SKU} User:{User} {time} {date}.csv'
         form_data = [form.SKU.data, form.Parent.data, form.Brand.data, form.Gender.data, form.Closure.data,
                      form.Model.data, form.Type.data, form.Colour.data, form.Country_Manu.data, form.Upper_Mat.data,
                      form.Lining_Mat.data, form.Insole_Mat.data, form.Heel_Height.data, form.Weight.data,
                      form.Length.data, form.Depth.data, form.PurchaseOrder.data, form.Label.data,
                      form.Sizes.data,
                      form.submit.data]
+
         df_1str = df.iloc[0]
 
         # Add current user to the Author column
@@ -277,17 +292,26 @@ def kids_footwear():
             # concatenate df1 and df2
             df = pd.concat([df1, df2])
 
+
+
             df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
             df.to_csv(csv, index=False)
+            # move the files to path
+            shutil.move(xlsx, path)
+            shutil.move(csv, path)
+
+
 
         # # if the parent is not checked then leave it blank
         elif form.Parent.data == False:
             df['Parent'] = ''
 
             # remove last two columns from df
-            df.drop(df.columns[-2:], axis=1, inplace=True)
+
             df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
             df.to_csv(csv, index=False)
+            shutil.move(xlsx, path)
+            shutil.move(csv, path)
 
             # df = df.reindex(df.index[1:,1:])
 
