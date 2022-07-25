@@ -170,16 +170,19 @@ def adults_footwear():
         time = (datetime.datetime.now().strftime("%H:%M:%S"))
         date = (datetime.date.today().strftime("%d-%m-%Y"))
         Author = current_user.username
-        exports = 'static/exports'
-        xlsx = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.xlsx'
-        csv = f'/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/SKU:{SKU} User:{User} {time} {date}.csv'
-        form_data = [form.SKU.data, form.Parent.data, form.Brand.data, form.Gender.data, form.Closure.data,
-                     form.Model.data, form.Type.data, form.Colour.data, form.Country_Manu.data, form.Upper_Mat.data,
-                     form.Lining_Mat.data, form.Insole_Mat.data, form.Heel_Height.data, form.Weight.data,
-                     form.Length.data, form.Depth.data, form.PurchaseOrder.data, form.Label.data,
-                     form.Sizes.data,
-                     form.submit.data]
 
+        User = current_user.username
+        date = (datetime.date.today().strftime("%d-%m-%Y"))
+        directory = f'{form.PurchaseOrder.data}:{date}'
+        parent_dir = '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports'
+        path = os.path.join(parent_dir, directory)
+        try:
+            os.mkdir(path, 0o777)
+        except OSError:
+            pass
+
+        xlsx = f'SKU:{SKU} User:{User} {time} {date}.xlsx'
+        csv = f'SKU:{SKU} User:{User} {time} {date}.csv'
         df_1str = df.iloc[0]
 
         # Add current user to the Author column
@@ -212,6 +215,9 @@ def adults_footwear():
 
             df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
             df.to_csv(csv, index=False)
+            shutil.move(xlsx, path)
+            shutil.move(csv, path)
+
 
 
         # # if the parent is not checked then leave it blank
@@ -222,6 +228,9 @@ def adults_footwear():
             df.drop(df.columns[-2:], axis=1, inplace=True)
             df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
             df.to_csv(csv, index=False)
+            shutil.move(xlsx, path)
+            shutil.move(csv, path)
+
 
     return render_template('Adults-Footwear.html', title='Adults Footwear', form=form)
 
