@@ -1,29 +1,21 @@
-import os
 import secrets
-
-import datetime as datetime
 import shutil
-
-import numpy as np
+import glob
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, jsonify
-from flask_wtf import form
 from pip._internal.utils import datetime
-
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Adults, Kids, Adults_Footwear, Kids_Footwear
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 import os
-import flask_excel as excel
 import pandas as pd
 import datetime
 from flaskblog import choices
 from flaskblog import forms
 
+
 # Variables
-
-
 
 
 posts = [
@@ -142,11 +134,6 @@ def adults(df=None):
     return render_template('adults.html', posts=posts)
 
 
-
-
-
-
-
 # Kids entry form with a button for kidsfootwear and kids_clothing
 @app.route('/kids', methods=['GET', 'POST'])
 @login_required
@@ -231,7 +218,6 @@ def adults_footwear():
             shutil.move(xlsx, path)
             shutil.move(csv, path)
 
-
     return render_template('Adults-Footwear.html', title='Adults Footwear', form=form)
 
 
@@ -239,6 +225,7 @@ def adults_footwear():
 @app.route('/kids_footwear', methods=['GET', 'POST'])
 @login_required
 def kids_footwear():
+    global df_merge
     form = Kids_Footwear()
     if request.method == 'POST':
         # write form data to an excel file, for every size create a new row in the excel file
@@ -301,13 +288,13 @@ def kids_footwear():
             # concatenate df1 and df2
             df = pd.concat([df1, df2])
 
-
-
             df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
             df.to_csv(csv, index=False)
             # move the files to path
             shutil.move(xlsx, path)
             shutil.move(csv, path)
+
+
 
 
 
@@ -322,11 +309,44 @@ def kids_footwear():
             shutil.move(xlsx, path)
             shutil.move(csv, path)
 
-            # df = df.reindex(df.index[1:,1:])
+        # if the finalise button is pressed then merge all of the excel files that are in the folder matching the
+        # form.PurchaseOrder into one file.
 
-        # write the data to files
+        if form.Finalise.data == True:
+            # find all the .xlsx files in the path
+            xlsx_files = [f for f in os.listdir(path) if f.endswith('.xlsx')]
+            # find all the .csv files in the path
+            csv_files = [f for f in os.listdir(path) if f.endswith('.csv')]
+            # merge all the .xlsx files into one file
+            xlsx_merge = pd.concat([pd.read_excel(os.path.join(path, f)) for f in xlsx_files])
+            # merge all the .csv files into one file
+            csv_merge = pd.concat([pd.read_csv(os.path.join(path, f)) for f in csv_files])
+            # merge the two files into one file
 
-        # df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
-        # df.to_csv(csv, index=False)
+            # write the merged file to a new excel file
+            xlsx_merge.to_excel(f'{form.PurchaseOrder.data}:{date} Finalised.xlsx', index=False)
+
+            # write the merged file to a new csv file
+            csv_merge.to_csv(f'{form.PurchaseOrder.data}:{date} Finalised.csv', index=False)
+
+
+            # move the file to the Finalised folder
+            shutil.move(f'{form.PurchaseOrder.data}:{date} Finalised.xlsx',
+                        '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/Finalised')
+            shutil.move(f'{form.PurchaseOrder.data}:{date} Finalised.csv',
+                        '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/Finalised')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     return render_template('Kids_Footwear.html', title='Kids Footwear', form=form)
