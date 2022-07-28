@@ -170,7 +170,7 @@ class Adults_Clothing(FlaskForm):
     Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
     PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
-    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Kids_Footwear)
+    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Adults_Clothing)
 
     Finalise = BooleanField('Finalise')
 
@@ -244,7 +244,7 @@ class Kids_Clothing(FlaskForm):
     Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
     PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
-    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Kids_Footwear)
+    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Kids_Clothing)
 
     Finalise = BooleanField('Finalise')
     submit = SubmitField('Submit')

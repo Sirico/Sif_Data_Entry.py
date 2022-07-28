@@ -378,7 +378,7 @@ def adults_clothing():
 
 
 # Kids shoe sizes
-@app.route('/kids_clothing', methods=['GET', 'POST'])
+@app.route('/kids_footwear', methods=['GET', 'POST'])
 @login_required
 def kids_footwear():
     global df_merge
@@ -496,7 +496,7 @@ def kids_footwear():
     return render_template('Kids_Footwear.html', title='Kids Footwear', form=form)
 
     # Adults shoe sizes
-@app.route('/adults-footwear', methods=['GET', 'POST'])
+@app.route('/kids_clothing', methods=['GET', 'POST'])
 @login_required
 def kids_clothing():
     form = Kids_Clothing()
@@ -566,10 +566,6 @@ def kids_clothing():
             # move the files to path
             shutil.move(xlsx, path)
             shutil.move(csv, path)
-
-
-
-
 
         # # if the parent is not checked then leave it blank
         elif form.Parent.data == False:
