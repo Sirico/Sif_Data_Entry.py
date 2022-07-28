@@ -136,8 +136,10 @@ class Adults_Footwear(FlaskForm):
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
     Sizes = MultiCheckboxField("Select the sizes", choices=choices.Adults_Footwear)
 
+    Finalise = BooleanField('Finalise')
+
     submit = SubmitField('Submit')
-    Finish = SubmitField('Finish')
+
 
 class Adults_Clothing(FlaskForm):
     User = current_user
@@ -170,9 +172,9 @@ class Adults_Clothing(FlaskForm):
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
     Sizes = MultiCheckboxField("Select the sizes", choices=choices.Kids_Footwear)
 
-    submit = SubmitField('Submit')
-    Finish = SubmitField('Finish')
+    Finalise = BooleanField('Finalise')
 
+    submit = SubmitField('Submit')
 
 
 # Entry form content
@@ -213,8 +215,6 @@ class Kids_Footwear(FlaskForm):
     # create a button to finish the form
 
 
-
-
 class Kids_Clothing(FlaskForm):
     User = current_user
     Date = date.strftime("%a"' ' "%b" ' ' '%d' ' ' '%Y')
@@ -250,10 +250,6 @@ class Kids_Clothing(FlaskForm):
     submit = SubmitField('Submit')
 
 
-
 # form to edit the choices
 class Edit_Choices(FlaskForm):
     Brands_Edit = TextAreaField("Brands")
-
-
-

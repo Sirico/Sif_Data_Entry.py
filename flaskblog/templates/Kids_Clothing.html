@@ -1,7 +1,77 @@
 {% extends "layout.html" %}
 {% block content %}
+<h1>Sif Data Entry</h1>
+
+<<!-- create a form to enter data and post that data to Entry -->
+
+
+<form method="POST" action="" enctype="multipart/form-data">
 
 
 
-    {% endfor %}
+
+
+    <h8>{{ form.Date}} {{ form.Time}}</h8>
+    <h7>User:</h7>
+    <p>{{ current_user.username }}</p>
+    <br/>
+        <!-- center the form  align the fields-->
+
+    <div class="form-group">
+     {{ form.SKU.label }} float {{ form.SKU(size=20) }}
+    <br/>
+    {{ form.Parent.label }} {{ form.Parent}}
+    <br/>
+    {{ form.Brand.label}} {{ form.Brand()}}
+    <br/>
+    {{ form.Gender.label}} {{ form.Gender}}
+    <br/>
+    {{ form.Closure.label}}  {{ form.Closure}}
+    <br/>
+    {{ form.Model.label}} {{ form.Model}}
+    <br/>
+    {{ form.Colour.label}} {{ form.Colour}}
+    <br/>
+    {{ form.Type.label}} {{form.Type}}
+    <br/>
+    {{ form.Country_Manu.label}} {{form.Country_Manu}}
+    <br/>
+    {{ form.Upper_Mat.label}} {{form.Upper_Mat}}
+    <br/>
+    {{ form.Lining_Mat .label}} {{form.Lining_Mat }}
+    <br/>
+    {{ form.Insole_Mat.label}} {{form.Insole_Mat}}
+    <br/>
+    {{ form.Heel_Height.label}} {{form.Heel_Height}}
+    <br/>
+
+    <br/>
+    {{ form.Weight.label}} {{form.Weight}}
+    <br/>
+    {{ form.Height.label}} {{ form.Height }}
+    <br/>
+    {{ form.Length.label}} {{form.Length}}
+    <br/>
+    {{ form.Depth.label}} {{form.Depth}}
+    <br/>
+    {{ form.PurchaseOrder.label}} {{form.PurchaseOrder}}
+    <br/>
+    <br/>
+    {{ form.Label.label}}   <br/>    {{form.Label}}
+    <br/>
+    {{form.Adults}}
+    <br/>
+    {{ form.Sizes.label}} {{form.Sizes}}
+    <br/>
+    <br/>
+    <br/>
+
+    {{form.submit}}
+    <br/>
+    <br/>
+        <br/>
+    <br/>
+    <br/>
+   {{ form.Finalise.label}} {{ form.Finalise }}
+
 {% endblock content %}
