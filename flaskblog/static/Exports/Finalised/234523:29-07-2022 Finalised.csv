@@ -1,0 +1,4 @@
+SKU,Parent,Author,Brand,Gender,Closure,Model,Type,Colour,Country_Manu,Upper_Mat,Lining_Mat,Insole_Mat,Heel_Height,Weight,Height,Length,Depth,PurchaseOrder,Label,Finalise,submit,csrf_token,Sizes
+245,Parent,Test,Adidas,Male,test,1234,test,Black,Afghanistan,Leather,test,test,1,1,1,1,1,234523,test,True,True,,
+245_M,245,Test,Adidas,Male,test,1234,test,Black,Afghanistan,Leather,test,test,1,1,1,1,1,234523,test,True,True,,M
+245_XXL,245,Test,Adidas,Male,test,1234,test,Black,Afghanistan,Leather,test,test,1,1,1,1,1,234523,test,True,True,,XXL
