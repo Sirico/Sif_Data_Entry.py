@@ -5,7 +5,8 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, jsonify
 from pip._internal.utils import datetime
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Adults, Kids, Adults_Footwear, Kids_Footwear,Adults_Clothing,Kids_Clothing
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Adults, Kids, Adults_Footwear, \
+    Kids_Footwear, Adults_Clothing, Kids_Clothing
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 import os
@@ -13,7 +14,6 @@ import pandas as pd
 import datetime
 from flaskblog import choices
 from flaskblog import forms
-
 
 # Variables
 
@@ -257,13 +257,10 @@ def adults_footwear():
     return render_template('Adults_Footwear.html', title='Adults Footwear', form=form)
 
 
-
-
 @app.route('/adults_clothing', methods=['GET', 'POST'])
 @login_required
 def adults_clothing():
     form = Adults_Clothing()
-
 
     if request.method == 'POST':
         # write form data to an excel file, for every size create a new row in the excel file
@@ -376,7 +373,6 @@ def adults_clothing():
     return render_template('Adults_Clothing.html', title='Adults Clothing', form=form)
 
 
-
 # Kids shoe sizes
 @app.route('/kids_footwear', methods=['GET', 'POST'])
 @login_required
@@ -485,17 +481,17 @@ def kids_footwear():
             # write the merged file to a new csv file
             csv_merge.to_csv(f'{form.PurchaseOrder.data}:{date} Finalised.csv', index=False)
 
-
             # move the file to the Finalised folder
             shutil.move(f'{form.PurchaseOrder.data}:{date} Finalised.xlsx',
                         '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/Finalised')
             shutil.move(f'{form.PurchaseOrder.data}:{date} Finalised.csv',
                         '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/Finalised')
 
-
     return render_template('Kids_Footwear.html', title='Kids Footwear', form=form)
 
     # Adults shoe sizes
+
+
 @app.route('/kids_clothing', methods=['GET', 'POST'])
 @login_required
 def kids_clothing():
@@ -605,12 +601,3 @@ def kids_clothing():
                         '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/Finalised')
 
     return render_template('Kids_Clothing.html', title='Kids Clothing', form=form)
-    
-        
-
-
-
-
-
-
-

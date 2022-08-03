@@ -97,11 +97,13 @@ class Entry(FlaskForm):
 class Adults(FlaskForm):
     Footwear = SubmitField('Footwear')
     Clothing = SubmitField('Clothing')
+    Accessories = SubmitField('Accessories')
 
 
 class Kids(FlaskForm):
     Kids_Footwear = RadioField('Kids_Footwear', choices=choices.Kids_Footwear)
     Kids_Clothing = RadioField('Kids_Clothing', choices=choices.Kids_Clothing)
+
 
 
 # Entry form content
@@ -120,7 +122,7 @@ class Adults_Footwear(FlaskForm):
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
     Closure = SelectField("Select Closure Type", choices=['', 'test'], validators=[DataRequired()])
     Model = StringField("Select Model", validators=[DataRequired()])
-    Type = SelectField("Select Type", choices=['', 'test'], validators=[DataRequired()])
+    Type = SelectField("Select Type", choices=choices.Type_Footwear, validators=[DataRequired()])
     Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
     Country_Manu = SelectField("Select the country of manufacture", choices=choices.Country,
                                validators=[DataRequired()])
@@ -158,7 +160,7 @@ class Kids_Footwear(FlaskForm):
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
     Closure = SelectField("Select Closure Type", choices=['', 'test'], validators=[DataRequired()])
     Model = StringField("Select Model", validators=[DataRequired()])
-    Type = SelectField("Select Type", choices=['', 'test'], validators=[DataRequired()])
+    Type = SelectField("Select Type", choices=choices.Type_Footwear, validators=[DataRequired()])
     Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
     Country_Manu = SelectField("Select the country of manufacture", choices=choices.Country,
                                validators=[DataRequired()])
@@ -193,9 +195,9 @@ class Kids_Clothing(FlaskForm):
 
     Brand = SelectField("Brand", choices=choices.Brand, validators=[DataRequired()])
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
-    Closure = SelectField("Select Closure Type", choices=['', 'test'], validators=[DataRequired()])
+    Closure = SelectField("Select Closure Type", choices=choices.Type_Clothing, validators=[DataRequired()])
     Model = StringField("Select Model", validators=[DataRequired()])
-    Type = SelectField("Select Type", choices=['', 'test'], validators=[DataRequired()])
+    Type = SelectField("Select Type", choices=choices.Type_Clothing, validators=[DataRequired()])
     Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
     Country_Manu = SelectField("Select the country of manufacture", choices=choices.Country,
                                validators=[DataRequired()])
@@ -229,9 +231,9 @@ class Adults_Clothing(FlaskForm):
 
     Brand = SelectField("Brand", choices=choices.Brand, validators=[DataRequired()])
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
-    Closure = SelectField("Select Closure Type", choices=['', 'test'], validators=[DataRequired()])
+    Closure = SelectField("Select Closure Type", choices=choices.Type_Clothing, validators=[DataRequired()])
     Model = StringField("Select Model", validators=[DataRequired()])
-    Type = SelectField("Select Type", choices=['', 'test'], validators=[DataRequired()])
+    Type = SelectField("Select Type", choices=choices.Type_Clothing, validators=[DataRequired()])
     Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
     Country_Manu = SelectField("Select the country of manufacture", choices=choices.Country,
                                validators=[DataRequired()])
@@ -251,6 +253,40 @@ class Adults_Clothing(FlaskForm):
 
     submit = SubmitField('Submit')
 
+class Accessories(FlaskForm):
+    User = current_user
+    Date = date.strftime("%a"' ' "%b" ' ' '%d' ' ' '%Y')
+    Time = date.strftime("%R")
+    SKU = StringField("SKU", validators=[DataRequired()])
+    Parent = BooleanField('Is this a parent SKU?', default='unchecked')
+    # create an author field using current_user.id
+    Author = StringField("Author", validators=[DataRequired()])
+
+    # Brand with choices from choices.py
+
+    Brand = SelectField("Brand", choices=choices.Brand, validators=[DataRequired()])
+    Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
+    Closure = SelectField("Select Closure Type", choices=choices.Type_Accessories, validators=[DataRequired()])
+    Model = StringField("Select Model", validators=[DataRequired()])
+    Type = SelectField("Select Type", choices=choices.Type_Footwear, validators=[DataRequired()])
+    Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
+    Country_Manu = SelectField("Select the country of manufacture", choices=choices.Country,
+                               validators=[DataRequired()])
+    Upper_Mat = SelectField("Select the upper material", choices=['', 'Leather'], validators=[DataRequired()])
+    Lining_Mat = SelectField("Select the lining material", choices=['', 'test'], validators=[DataRequired()])
+    Insole_Mat = SelectField("Select the insole material", choices=['', 'test'], validators=[DataRequired()])
+    Heel_Height = IntegerField("Input the heel height in cm", validators=[DataRequired()])
+    Weight = IntegerField("Input the weight in KG", validators=[DataRequired()])
+    Height = IntegerField("Input the products height in cm", validators=[DataRequired()])
+    Length = IntegerField("Input the products length in cm", validators=[DataRequired()])
+    Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
+    PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
+    Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
+    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Kids_Footwear)
+
+    Finalise = BooleanField('Finalise')
+
+    submit = SubmitField('Submit')
 
 
 

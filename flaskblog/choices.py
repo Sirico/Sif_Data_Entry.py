@@ -91,3 +91,19 @@ Kids_Footwear = ['1k', '1.5k', '2k', '2.5k', '3k', '3.5k', '4k', '4.5k', '5k', '
 Adults_Clothing = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
 Kids_Clothing = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL']
+
+Type_Footwear = ['*Select type of footwear', 'Trainers', 'Canvas & Plimsoles', 'Flip-Flops & Slides', 'Running Shoes',
+                 'Football Boots', 'Shoes',
+                 'Boots', 'Basketball']
+Type_Footwear.sort()
+
+Type_Clothing = ['*Select Type of clothing', 'Hoodies', 'Track Pants', 'Vests', 'Tees & Tops', 'Tracksuits',
+                 'Sweatshirts', 'Jackets & Gilets',
+                 'Trousers', 'Jeans & Chinos', 'Shorts', 'Swimwear', 'Football', 'Baselayers', 'Polo Shirts',
+                 'Socks & Underwear', 'Formal Shirts', 'Coats', 'Sets', 'Workwear', 'Blazers']
+Type_Clothing.sort()
+
+Type_Accessories = ['*Select type of accessory', 'Bags', 'Caps', 'Beanies', 'Gloves & Scarves', 'Watches',
+                    'Sunglasses', 'Wallets', 'Other', 'Belts',
+                    'Fragrances', 'Swimming', 'Football Accessories', 'Ties']
+Type_Accessories.sort()
