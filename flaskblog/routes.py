@@ -6,7 +6,7 @@ from flask import render_template, url_for, flash, redirect, request, jsonify
 from pip._internal.utils import datetime
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Adults, Kids, Adults_Footwear, \
-    Kids_Footwear, Adults_Clothing, Kids_Clothing
+    Kids_Footwear, Adults_Clothing, Kids_Clothing, Accessories
 from flaskblog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 import os
@@ -601,3 +601,115 @@ def kids_clothing():
                         '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/Finalised')
 
     return render_template('Kids_Clothing.html', title='Kids Clothing', form=form)
+
+
+@app.route('/Accessories', methods=['GET', 'POST'])
+@login_required
+def accessories():
+    form = Accessories()
+    if request.method == 'POST':
+        # write form data to an excel file, for every size create a new row in the excel file
+
+        df = pd.DataFrame(form.data)
+
+        # create a variable use data from form.SKU.data
+        User = current_user.username
+        SKU = request.form.get('SKU')
+        time = (datetime.datetime.now().strftime("%H:%M:%S"))
+        date = (datetime.date.today().strftime("%d-%m-%Y"))
+        Author = current_user.username
+
+        User = current_user.username
+        date = (datetime.date.today().strftime("%d-%m-%Y"))
+        directory = f'{form.PurchaseOrder.data}:{date}'
+        parent_dir = '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports'
+        path = os.path.join(parent_dir, directory)
+        try:
+            os.mkdir(path, 0o777)
+        except OSError:
+            pass
+
+        xlsx = f'SKU:{SKU} User:{User} {time} {date}.xlsx'
+        csv = f'SKU:{SKU} User:{User} {time} {date}.csv'
+        form_data = [form.SKU.data, form.Parent.data, form.Brand.data, form.Gender.data, form.Closure.data,
+                     form.Model.data, form.Type.data, form.Colour.data, form.Country_Manu.data, form.Upper_Mat.data,
+                     form.Lining_Mat.data, form.Insole_Mat.data, form.Heel_Height.data, form.Weight.data,
+                     form.Length.data, form.Depth.data, form.PurchaseOrder.data, form.Label.data,
+                     form.Sizes.data,
+                     form.submit.data]
+
+        df_1str = df.iloc[0]
+
+        # Add current user to the Author column
+        df['Author'] = current_user.username
+
+        # If the parent box is checked add another row to df. Remove True from df2 parent box
+        if form.Parent.data == True:
+            # copy the sku and the word parent into the first row Parent column cell.
+            df1 = df.copy()
+            df1['Parent'] = 'Parent'
+
+            # delete the sizes column of df1
+            del df1['Sizes']
+
+            # remove every row except the first row
+
+            df1 = df1.iloc[0:1]
+
+            # create df2 as the rest of the dataframe
+            df2 = df.iloc[0:]
+            # blank the parent column in df2
+            df2['Parent'] = form.SKU.data
+
+            # if there's more than one row in df add SKU and size to the next rows
+
+            for i in range(0, len(df2)):
+                df2.loc[i, 'SKU'] = df2.loc[i, 'SKU'] + '_' + form.Sizes.data[i]
+            # concatenate df1 and df2
+            df = pd.concat([df1, df2])
+
+            df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
+            df.to_csv(csv, index=False)
+            # move the files to path
+            shutil.move(xlsx, path)
+            shutil.move(csv, path)
+
+        # # if the parent is not checked then leave it blank
+        elif form.Parent.data == False:
+            df['Parent'] = ''
+
+            # remove last two columns from df
+
+            df.to_excel(xlsx, sheet_name=current_user.username + '_' + str(datetime.date.today()), index=False)
+            df.to_csv(csv, index=False)
+            shutil.move(xlsx, path)
+            shutil.move(csv, path)
+
+        # if the finalise button is pressed then merge all of the excel files that are in the folder matching the
+        # form.PurchaseOrder into one file.
+
+        if form.Finalise.data == True:
+            # find all the .xlsx files in the path
+            xlsx_files = [f for f in os.listdir(path) if f.endswith('.xlsx')]
+            # find all the .csv files in the path
+            csv_files = [f for f in os.listdir(path) if f.endswith('.csv')]
+            # merge all the .xlsx files into one file
+            xlsx_merge = pd.concat([pd.read_excel(os.path.join(path, f)) for f in xlsx_files])
+            # merge all the .csv files into one file
+            csv_merge = pd.concat([pd.read_csv(os.path.join(path, f)) for f in csv_files])
+            # merge the two files into one file
+
+            # write the merged file to a new excel file
+            xlsx_merge.to_excel(f'{form.PurchaseOrder.data}:{date} Finalised.xlsx', index=False)
+
+            # write the merged file to a new csv file
+            csv_merge.to_csv(f'{form.PurchaseOrder.data}:{date} Finalised.csv', index=False)
+
+            # move the file to the Finalised folder
+            shutil.move(f'{form.PurchaseOrder.data}:{date} Finalised.xlsx',
+                        '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/Finalised')
+            shutil.move(f'{form.PurchaseOrder.data}:{date} Finalised.csv',
+                        '/home/darren/PycharmProjects/Sif/Flaskblog/flaskblog/static/Exports/Finalised')
+
+    return render_template('Accessories.html', title='Accessories', form=form)
+

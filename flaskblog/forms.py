@@ -268,7 +268,7 @@ class Accessories(FlaskForm):
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
     Closure = SelectField("Select Closure Type", choices=choices.Type_Accessories, validators=[DataRequired()])
     Model = StringField("Select Model", validators=[DataRequired()])
-    Type = SelectField("Select Type", choices=choices.Type_Footwear, validators=[DataRequired()])
+    Type = SelectField("Select Type", choices=choices.Type_Accessories, validators=[DataRequired()])
     Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
     Country_Manu = SelectField("Select the country of manufacture", choices=choices.Country,
                                validators=[DataRequired()])
