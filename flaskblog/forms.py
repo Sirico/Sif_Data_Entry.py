@@ -231,7 +231,7 @@ class Adults_Clothing(FlaskForm):
 
     Brand = SelectField("Brand", choices=choices.Brand, validators=[DataRequired()])
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
-    Closure = SelectField("Select Closure Type", choices=choices.Type_Clothing, validators=[DataRequired()])
+    Closure = SelectField("Select Closure Type", choices=choices.Type_Closure, validators=[DataRequired()])
     Model = StringField("Select Model", validators=[DataRequired()])
     Type = SelectField("Select Type", choices=choices.Type_Clothing, validators=[DataRequired()])
     Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
@@ -266,7 +266,7 @@ class Accessories(FlaskForm):
 
     Brand = SelectField("Brand", choices=choices.Brand, validators=[DataRequired()])
     Gender = SelectField("Select Gender", choices=['', 'Female', 'Male', 'Kids'])
-    Closure = SelectField("Select Closure Type", choices=choices.Type_Accessories, validators=[DataRequired()])
+    Closure = SelectField("Select Closure Type", choices=choices.Type_Closure, validators=[DataRequired()])
     Model = StringField("Select Model", validators=[DataRequired()])
     Type = SelectField("Select Type", choices=choices.Type_Accessories, validators=[DataRequired()])
     Colour = SelectField("Select main colour", choices=choices.Colour, validators=[DataRequired()])
@@ -282,7 +282,7 @@ class Accessories(FlaskForm):
     Depth = IntegerField("Input the products depth in cm", validators=[DataRequired()])
     PurchaseOrder = StringField("Input the purchase order number", validators=[DataRequired()])
     Label = SelectField("Select the label", choices=['', 'test'], validators=[DataRequired()])
-    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Kids_Footwear)
+    Sizes = MultiCheckboxField("Select the sizes", choices=choices.Accessories_sizes)
 
     Finalise = BooleanField('Finalise')
 

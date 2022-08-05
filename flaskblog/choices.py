@@ -92,6 +92,8 @@ Adults_Clothing = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
 Kids_Clothing = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL']
 
+Accessories_sizes = ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'Universal fit']
+
 Type_Footwear = ['*Select type of footwear', 'Trainers', 'Canvas & Plimsoles', 'Flip-Flops & Slides', 'Running Shoes',
                  'Football Boots', 'Shoes',
                  'Boots', 'Basketball']
@@ -107,3 +109,5 @@ Type_Accessories = ['*Select type of accessory', 'Bags', 'Caps', 'Beanies', 'Glo
                     'Sunglasses', 'Wallets', 'Other', 'Belts',
                     'Fragrances', 'Swimming', 'Football Accessories', 'Ties']
 Type_Accessories.sort()
+
+Type_Closure = ['*Select type of closure', 'Zip', 'Button', 'Popper', 'Clasp', 'Magnetic', 'Other']
