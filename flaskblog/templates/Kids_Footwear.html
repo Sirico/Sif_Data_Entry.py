@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <h1>Sif Data Entry</h1>
 
 <!-- create a form to enter data and post that data to Entry -->
@@ -19,7 +20,7 @@
     <p>{{ current_user.username }}</p>
     <br/>
         <!-- center the form  align the fields-->
-
+        <div class="container">
     <div class="form-group">
      {{ form.SKU.label }} float {{ form.SKU(size=20) }}
     <br/>
@@ -76,6 +77,7 @@
     <br/>
     <br/>
    {{ form.Finalise.label}} {{ form.Finalise }}
+    </div>
 
 
 

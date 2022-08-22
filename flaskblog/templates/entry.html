@@ -1,14 +1,28 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Sif Data Entry</h1>
- enter data and post that data to Entry -->
+
+<div class="container">
+
+
+
+<h1> Data Entry</h1>
+
 <form method="POST" action="" enctype="multipart/form-data">
+    <!-- Create two yellow buttons with black text in the center of the page -->
+    <br class="row">
+        <div class="col-md-6">
+            <a href="/kids" class="btn btn-warning btn-lg btn-block">Kids</a>
+        </div>
+    </br>
+        <div class="col-md-6">
+            <a href="/adults" class="btn btn-warning btn-lg btn-block">Adults</a>
 
-    {{ form.Adults.label}}  {{ form.Adults}}
-    {{ form.Kids.label}}  {{ form.Kids}}
+                    </div>
+                    </br>
+        <div class="col-md-6">
+            <a href="/Accessories" class="btn btn-warning btn-lg btn-block">Acessories</a>
 
-
-
+        </div>
 
 
 

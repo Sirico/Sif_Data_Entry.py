@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <h1>Sif Data Entry</h1>
 
 <!-- create a form to enter data and post that data to Entry -->
@@ -10,7 +11,7 @@
 
 
 
-
+    <div class="container">
     <h8>{{ form.Date}} {{ form.Time}}</h8>
     <h7>User:</h7>
     <p>{{ current_user.username }}</p>
@@ -73,5 +74,5 @@
     <br/>
     <br/>
    {{ form.Finalise.label}} {{ form.Finalise }}
-
+</div>
 {% endblock content %}

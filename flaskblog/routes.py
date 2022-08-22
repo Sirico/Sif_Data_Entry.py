@@ -1,19 +1,21 @@
+import datetime
+import glob
+import os
 import secrets
 import shutil
-import glob
-from PIL import Image
-from flask import render_template, url_for, flash, redirect, request, jsonify
-from pip._internal.utils import datetime
-from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Adults, Kids, Adults_Footwear, \
-    Kids_Footwear, Adults_Clothing, Kids_Clothing, Accessories
-from flaskblog.models import User, Post
-from flask_login import login_user, current_user, logout_user, login_required
-import os
+
 import pandas as pd
-import datetime
-from flaskblog import choices
-from flaskblog import forms
+from flask import flash, jsonify, redirect, render_template, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
+from PIL import Image
+from pip._internal.utils import datetime
+
+from flaskblog import app, bcrypt, choices, db, forms
+from flaskblog.forms import (Accessories, Adults, Adults_Clothing,
+                             Adults_Footwear, Kids, Kids_Clothing,
+                             Kids_Footwear, LoginForm, RegistrationForm,
+                             UpdateAccountForm)
+from flaskblog.models import Post, User
 
 # Variables
 

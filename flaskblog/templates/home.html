@@ -1,21 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
     {% for post in posts %}
+
+    <div class="container">
+
+        
     <h1>Welcome to Sport it first Data Entry</h1>
-    <h2>'Please select if you would like to add kids or adults sized items.</h2>
-    <!-- Create two yellow buttons with black text in the center of the page -->
-    <div class="row">
-        <div class="col-md-6">
-            <a href="/kids" class="btn btn-warning btn-lg btn-block">Kids</a>
-        </div>
-        <div class="col-md-6">
-            <a href="/adults" class="btn btn-warning btn-lg btn-block">Adults</a>
 
-                    </div>
-        <div class="col-md-6">
-            <a href="/Accessories" class="btn btn-warning btn-lg btn-block">Acessories</a>
-
-
+    <!-- create a hyperlink to /login -->
+    
+    <h2><a href="/login" class="btn btn-warning">Login</a>  and click <a href="/entry" class="btn btn-warning">Entry</a>  to start</h2>
 
 
         </div>

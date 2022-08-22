@@ -16,7 +16,7 @@
     <p>{{ current_user.username }}</p>
     <br/>
         <!-- center the form  align the fields-->
-
+        <div class="container">
     <div class="form-group">
      {{ form.SKU.label }} float {{ form.SKU(size=20) }}
     <br/>
@@ -73,5 +73,5 @@
     <br/>
     <br/>
    {{ form.Finalise.label}} {{ form.Finalise }}
-
+    </div>
 {% endblock content %}
