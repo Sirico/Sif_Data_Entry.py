@@ -8,9 +8,21 @@
     <h1>Welcome to Sport it first Data Entry</h1>
 
     <!-- create a hyperlink to /login -->
-    
-    <h2><a href="/login" class="btn btn-warning">Login</a>  and click <a href="/entry" class="btn btn-warning">Entry</a>  to start</h2>
+<!--if already logged in hide login button -->
+    {% if not current_user.is_authenticated %}
+    <h2>please login
+    <a href="{{ url_for('login') }}" class="btn btn-warning">Login</a> and then
+    {% endif %}
+    click <a href="/entry" class="btn btn-warning">Entry</a>  to start</h2>
+    {% if current_user.is_authenticated %}
+    <!--display current user-->
 
+        <p>You are  logged in as  <!--highlight word-->  
+        <span class="badge badge-pill badge-warning">{{ current_user.username }}</span>
+if this is not you please <a href="{{ url_for('logout')}}"class="btnbtn-warning">logout</a> and sign in with your user. </p>
+    {% else %}
+        <p>Please <a href="{{ url_for('login') }}">login</a> to enter data</p>
+    {% endif %}
 
         </div>
 
